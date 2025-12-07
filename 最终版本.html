@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    Apple (中国大陆) - 2025 官网学习版 | iPhone 17 / MacBook Pro M5 / iPad Pro
+  </title>
+  <meta name="description" content="完整复刻苹果官网，添加 iPhone 17 系列、MacBook Pro M5、iPad Pro M5、AirPods Pro 3、Watch Series 11、Vision Pro 2。仅用于学习。">
+  <style>
+    /* 核心样式：极简 + 液态玻璃 + 动画 */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      background: #f5f5f7; /* 原#000改为浅色背景 */
+      color: #1d1d1f; /* 文字颜色改为深色 */
+      line-height: 1.4; 
+      font-family: "PingFang SC", "Microsoft YaHei", -apple-system, sans-serif; 
+      direction: ltr !important; unicode-bidi: embed !important;
+      overflow-x: hidden;
+    }
+    /* 导航栏 */
+    .nav { position: fixed; top: 0; left: 0; right: 0; height: 48px; background: rgba(245,245,247,0.8); /* 适配浅色背景 */ backdrop-filter: blur(20px); z-index: 9999; transition: background 0.4s; }
+    .nav-inner { max-width: 1024px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; font-size: 14px; }
+    .nav a { color: #1d1d1f; /* 导航文字改为深色 */ text-decoration: none; opacity: 0.8; margin: 0 10px; transition: opacity 0.2s; }
+    .nav a:hover { opacity: 1; }
+    .logo { font-size: 21px; font-weight: 600; }
+    /* 英雄区 - 核心大页面样式 */
+    .hero { 
+      height: 80vh; min-height: 450px; 
+      position: relative; text-align: center; overflow: hidden; 
+      background: #f5f5f7; /* 英雄区默认浅色背景，去掉黑色 */
+    }
+    /* iPhone 17 Pro页面单独设置黑色背景 */
+    #iphone17pro {
+      background: #000 !important;
+    }
+    #iphone17pro .hero-content {
+      color: #fff !important;
+    }
+    .hero:not(.light) { color: #1d1d1f !important; /* 非light类文字改为深色 */ }
+    .hero-content { 
+      padding-top: 80px; position: relative; z-index: 2; 
+      max-width: 90%; margin: 0 auto;
+    }
+    /* Apple Watch页面内容居中对齐优化 */
+    #watchseries11 .hero-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding-top: 0;
+    }
+    #watchseries11 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero h1 { 
+      font-size: clamp(36px, 6vw, 60px); font-weight: 600; 
+      margin-bottom: 8px; color: inherit;
+    }
+    .hero h2 { 
+      font-size: clamp(20px, 3vw, 28px); font-weight: 400; 
+      margin-bottom: 20px; color: inherit; line-height: 1.5;
+    }
+    .cta-links { font-size: clamp(16px, 1.8vw, 18px); 
+			margin-top: 400px}
+           
+    .link-cta { 
+      color: #0071e3; /* 链接颜色统一为苹果蓝色 */ text-decoration: none; margin: 0 12px; 
+      position: relative; overflow: hidden; display: inline-block; 
+      padding: 6px 12px;
+    }
+    .link-cta.blue { color: #0071e3; }
+    .link-cta:hover { text-decoration: underline; }
+    .hero.light { 
+      background: #f5f5f7; color: #1d1d1f !important; 
+    }
+    .hero.light .link-cta { color: #0071e3; }
+    /* 大页面图片容器 - 放大图片（宽度从80%改为85%，高度从70%改为75%） */
+    .hero-image-wrap { 
+      position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); 
+      width: 85%; /* 原80%，放大 */
+      height: 75%; /* 原70%，放大 */
+      z-index: 1;
+    }
+    .hero-image { 
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+      object-fit: contain; object-position: center bottom; opacity: 0; 
+      transition: opacity 1s ease-in-out;
+    }
+    .hero-image.loaded { opacity: 1; }
+    /* 液态玻璃 */
+    .liquid-glass { 
+      background: rgba(255,255,255,0.8); /* 适配浅色背景的玻璃效果 */ backdrop-filter: blur(20px); 
+      border: 1px solid rgba(0,0,0,0.1); border-radius: 16px; 
+      transition: all 0.3s;
+    }
+    .hero.light .liquid-glass {
+      background: rgba(255,255,255,0.8); border-color: rgba(0,0,0,0.1);
+    }
+    .liquid-glass:hover { 
+      background: rgba(255,255,255,0.9); 
+      box-shadow: 0 8px 40px rgba(0,0,0,0.1); 
+    }
+    .hero.light .liquid-glass:hover {
+      background: rgba(255,255,255,0.9);
+    }
+    /* 卡片网格 - 优化对齐（已注释，保持不变） */
+    .tiles { 
+      display: grid; grid-template-columns: repeat(3, 1fr); 
+      gap: 20px; padding: 40px 20px; max-width: 1440px; margin: 0 auto;
+    }
+    .tile { 
+      height: 580px; border-radius: 20px; overflow: hidden; 
+      position: relative; text-align: center; background: #fff; /* 卡片改为白色背景，去掉黑色 */
+      color: #1d1d1f; transition: transform 0.3s ease;
+      display: flex; flex-direction: column; justify-content: flex-start;
+    }
+    .tile:hover { transform: translateY(-8px); }
+    .tile.light { 
+      background: #f5f5f7; color: #1d1d1f;
+    }
+    .tile-content { 
+      padding: 40px 20px 20px; flex-shrink: 0;
+    }
+    .tile h3 { 
+      font-size: 20px; font-weight: 400; margin-bottom: 8px;
+    }
+    .tile h2 { 
+      font-size: 36px; font-weight: 600; margin-bottom: 16px;
+    }
+    .tile-img { 
+      position: absolute; bottom: 0; left: 0; width: 100%; 
+      height: 75%; object-fit: contain; object-position: bottom center;
+      opacity: 0; transition: opacity 1s ease-in-out;
+    }
+    .tile-img.loaded { opacity: 1; }
+    /* 动画 */
+    .fade-in { 
+      opacity: 0; transform: translateY(40px); 
+      transition: all 1.2s cubic-bezier(0.23,1,0.32,1); 
+    }
+    .fade-in.visible { 
+      opacity: 1; transform: translateY(0); 
+    }
+    /* 波纹 */
+    .ripple { 
+      position: absolute; border-radius: 50%; 
+      background: rgba(0,0,0,0.7); /* 波纹改为深色，适配浅色背景 */ transform: scale(0); 
+      animation: ripple 0.7s linear; pointer-events: none; 
+    }
+    .hero.light .ripple {
+      background: rgba(0,0,0,0.7);
+    }
+    /* iPhone 17 Pro页面波纹改为白色 */
+    #iphone17pro .ripple {
+      background: rgba(255,255,255,0.7) !important;
+    }
+    @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+    /* 页脚 - 苹果官网风格（保持不变） */
+    .footer { 
+      background: #f5f5f7; color: #6e6e73; font-size: 12px; 
+      padding: 40px 20px; margin-top: 40px;
+    }
+    .footer-container { 
+      max-width: 1200px; margin: 0 auto; 
+      display: grid; grid-template-columns: repeat(6, 1fr); 
+      gap: 20px; padding-bottom: 30px; border-bottom: 1px solid #e0e0e0;
+    }
+    .footer-column h4 { 
+      font-size: 14px; color: #1d1d1f; margin-bottom: 16px; 
+      font-weight: 600;
+    }
+    .footer-column ul { list-style: none; }
+    .footer-column ul li { margin-bottom: 12px; }
+    .footer-column ul li a { 
+      color: #6e6e73; text-decoration: none; transition: color 0.2s;
+    }
+    .footer-column ul li a:hover { color: #1d1d1f; }
+    .footer-bottom { 
+      max-width: 1200px; margin: 20px auto 0; 
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .footer-legal { 
+      display: flex; align-items: center; gap: 16px; 
+      flex-wrap: wrap;
+    }
+    .footer-legal a { 
+      color: #6e6e73; text-decoration: none; 
+    }
+    .footer-legal a:hover { text-decoration: underline; }
+    .footer-copyright { 
+      color: #999; display: flex; align-items: center; 
+      justify-content: space-between; flex-wrap: wrap;
+    }
+    .footer-region { color: #6e6e73; }
+    /* 暗黑模式（保持不变，若不需要可注释） */
+    @media (prefers-color-scheme: dark) { 
+      .hero.light { 
+        background: #1d1d1f; color: #ffffff !important; 
+      }
+      .tile.light { 
+        background: #1d1d1f; color: #ffffff !important; 
+      }
+      .footer { 
+        background: #1d1d1f; color: #a1a1a6; 
+        border-bottom: 1px solid #333;
+      }
+      .footer-column h4 { color: #ffffff; }
+      .footer-column ul li a { color: #a1a1a6; }
+      .footer-column ul li a:hover { color: #ffffff; }
+      .footer-legal a { color: #a1a1a6; }
+      .footer-copyright { color: #777; }
+      .footer-region { color: #a1a1a6; }
+    }
+    /* 响应式优化（保持不变） */
+    @media (max-width: 1068px) { 
+      .tiles { grid-template-columns: repeat(2, 1fr); } 
+      .tile { height: 520px; }
+      .hero-image-wrap { width: 90%; /* 小屏进一步放大 */ height: 78%; }
+      .footer-container { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (max-width: 734px) { 
+      .hero { height: 70vh; min-height: 400px; } 
+      .tiles { grid-template-columns: 1fr; padding: 20px; } 
+      .tile { height: 480px; }
+      .hero-content { padding-top: 60px; }
+      .hero-image-wrap { width: 95%; /* 小屏进一步放大 */ height: 80%; }
+      .footer-container { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .hero { height: 60vh; min-height: 350px; }
+      .cta-links { display: flex; flex-direction: column; gap: 10px; }
+      .link-cta { margin: 0; }
+      .hero-image-wrap { width: 98%; /* 小屏进一步放大 */ height: 82%; }
+      .footer-container { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 导航栏 -->
+  <nav class="nav liquid-glass">
+    <div class="nav-inner">
+      <a href=" " class="logo"></a>
+      <a href="#">Store</a><a href="#">Mac</a><a href="#">iPad</a><a href="#">iPhone</a>
+      <a href="#">Watch</a><a href="#">Vision</a><a href="#">AirPods</a><a href="#">TV 与家居</a>
+      <a href="#">娱乐</a><a href="#">配件</a><a href="#">支持</a>
+      <a href="#" class="nav-icon">🔍</a><a href="#" class="nav-icon">🛍</a>
+    </div>
+  </nav>
+
+  <!-- iPhone 17 Pro 页面（设置为黑色背景） -->
+  <section class="hero fade-in" id="iphone17pro">
+    <div class="hero-content">
+      <!-- 此处内容你之前有删减，保持现有结构 -->
+    </div>
+    <div class="hero-image-wrap">
+      <img src="图片/1.jpg" alt="iPhone 17 Pro" class="hero-image" loading="lazy">
+    </div>
+  </section>
+
+ <!-- MacBook Pro M5 页面（浅色背景，保持不变） -->
+ <section class="hero light fade-in" id="macbookprom5">
+   <div class="hero-content">
+     <h1>MacBook Pro M5</h1>
+     <h2>性能炸裂  M5 芯片。更快 SSD。</h2>
+   </div>
+   <div class="hero-image-wrap">
+     <img src="图片/12.jpg" alt="MacBook Pro M5" class="hero-image" loading="lazy">
+   </div>
+ </section>
+ 
+
+<!-- iPad Pro M5 页面（仅图片下移） -->
+<section class="hero light fade-in" id="ipadprom5" style="background: #000000;">
+  <div class="hero-content">
+    <h1 style="color: #fefeff;">iPad Pro M5</h1>
+    <h2 style="color: #ffffff;">M5 芯片   横屏优化。</h2>
+  </div>
+  <!-- 增大bottom负值，让容器（图片）大幅下移 -->
+  <div class="hero-image-wrap" style="position: absolute; bottom: -120px; left: 50%; transform: translateX(-50%);">
+    <img src="图片/11.jpg" alt="iPad Pro M5" class="hero-image" loading="lazy" style="filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1)); transform: scale(1.7); transform-origin: center bottom; width: 100%; height: 100%; object-fit: contain;">
+  </div>
+</section>
+ 
+
+
+  <!-- AirPods Pro 3 页面（浅色背景，保持不变） -->
+  <section class="hero light fade-in" id="airpodspro3">
+    <div class="hero-content">
+      <h1>AirPods Pro 3</h1>
+      <h2>自适应音频  健康洞察升级。</h2>
+      
+       
+      </div>
+    </div>
+    <div class="hero-image-wrap">
+      <img src="图片/2.jpg" alt="AirPods Pro 3" class="hero-image" loading="lazy">
+    </div>
+  </section>
+
+<!-- Watch Series 11 页面（调整对齐） -->
+<section class="hero fade-in" id="watchseries11">
+  <div class="hero-content">
+    <h1>Apple Watch Series 11</h1>
+    <h2>5G 连接  高血压通知。睡眠评分。</h2>
+    <div class="cta-links liquid-glass">
+      
+    </div>
+  </div>
+  <div class="hero-image-wrap">
+    <img src="图片/6.jpg" alt="Watch Series 11" class="hero-image" loading="lazy" 
+     style="transform: translateX(1%) scale(0.9); transform-origin: center center;">
+  </div>
+</section>
+
+<!-- Vision Pro 2 页面（放大图片2倍并调整位置） -->
+<section class="hero light fade-in" id="visionpro2">
+  <div class="hero-content">
+    <h1>Vision Pro </h1>
+    <h2>M5 芯片  双织物带 新头带。</h2>
+  </div>
+  <div class="hero-image-wrap" style="position: absolute; bottom: -80px; left: 50%; transform: translateX(-50%);">
+    <img src="图片/3.jpg" alt="Vision Pro " class="hero-image" loading="lazy" style="transform: scale(1.3); transform-origin: center bottom; width: 100%; height: 100%; object-fit: contain;">
+  </div>
+</section>
+</section>
+
+  <!-- 卡片网格（已注释，保持不变） -->
+ 
+  <!-- 页脚 - 苹果官网风格（保持不变） -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h4>购物与了解</h4>
+        <ul>
+          <li><a href="#">Store</a></li>
+          <li><a href="#">Mac</a></li>
+          <li><a href="#">iPad</a></li>
+          <li><a href="#">iPhone</a></li>
+          <li><a href="#">Watch</a></li>
+          <li><a href="#">Vision</a></li>
+          <li><a href="#">AirPods</a></li>
+          <li><a href="#">TV 与家居</a></li>
+          <li><a href="#">AirTag</a></li>
+          <li><a href="#">配件</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>服务</h4>
+        <ul>
+          <li><a href="#">Apple Music</a></li>
+          <li><a href="#">Apple TV+</a></li>
+          <li><a href="#">Apple Fitness+</a></li>
+          <li><a href="#">Apple Arcade</a></li>
+          <li><a href="#">iCloud</a></li>
+          <li><a href="#">Apple One</a></li>
+          <li><a href="#">Apple Pay</a></li>
+          <li><a href="#">App Store</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Apple 商店</h4>
+        <ul>
+          <li><a href="#">查找零售店</a></li>
+          <li><a href="#">Genius Bar</a></li>
+          <li><a href="#">Today at Apple</a></li>
+          <li><a href="#">Apple 夏令营</a></li>
+          <li><a href="#">Apple Store 应用</a></li>
+          <li><a href="#">翻新产品</a></li>
+          <li><a href="#">Apple 贸易计划</a></li>
+          <li><a href="#">订单状态</a></li>
+          <li><a href="#">购物帮助</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>关于 Apple</h4>
+        <ul>
+          <li><a href="#">新闻room</a></li>
+          <li><a href="#">Apple 领导力</a></li>
+          <li><a href="#">工作机会</a></li>
+          <li><a href="#">投资者</a></li>
+          <li><a href="#">可持续性</a></li>
+          <li><a href="#">隐私</a></li>
+          <li><a href="#">供应商责任</a></li>
+          <li><a href="#">联系 Apple</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Apple 价值观</h4>
+        <ul>
+          <li><a href="#">访问ibility</a></li>
+          <li><a href="#">教育</a></li>
+          <li><a href="#">环境</a></li>
+          <li><a href="#">包容性</a></li>
+          <li><a href="#">隐私</a></li>
+          <li><a href="#">供应商责任</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>商务</h4>
+        <ul>
+          <li><a href="#">Apple 商务</a></li>
+          <li><a href="#">商务购物</a></li>
+          <li><a href="#">Apple 商务应用</a></li>
+          <li><a href="#">商务管理</a></li>
+          <li><a href="#">Apple 商务金融</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-legal">
+        <a href="#">隐私政策</a>
+        <a href="#">使用条款</a>
+        <a href="#">销售政策</a>
+        <a href="#">法律信息</a>
+        <a href="#">网站地图</a>
+      </div>
+      <div class="footer-copyright">
+        <p>© 2025 Apple Inc. 保留所有权利。</p>
+        <span class="footer-region">中国大陆</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 动态交互：滚动导航变色 + 淡入 + 波纹 + 图片加载（保持不变）
+    document.addEventListener('DOMContentLoaded', () => {
+      // 滚动变导航（调整导航背景色适配浅色）
+      window.addEventListener('scroll', () => {
+        document.querySelector('.nav').style.background = window.scrollY > 50 ? 'rgba(245,245,247,0.95)' : 'rgba(245,245,247,0.8)';
+      });
+      // 淡入动画
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+      // 图片加载
+      document.querySelectorAll('img').forEach(img => {
+        if (img.complete) {
+          img.classList.add('loaded');
+        } else {
+          img.addEventListener('load', () => img.classList.add('loaded'));
+          img.addEventListener('error', () => {
+            const isHeroImg = img.classList.contains('hero-image') || img.classList.contains('tile-img');
+            const width = isHeroImg ? 800 : 400;
+            const height = isHeroImg ? 500 : 300;
+            // 区分iPhone 17 Pro页面的占位图颜色
+            const isIphone17 = img.closest('#iphone17pro');
+            const textColor = isIphone17 ? 'ffffff' : '1d1d1f';
+            const bgColor = isIphone17 ? '000000' : 'f5f5f7';
+            img.src = `https://via.placeholder.com/${width}x${height}?text=图片加载失败&color=${textColor}&bgcolor=${bgColor}`;
+            img.classList.add('loaded');
+          });
+        }
+      });
+      // 波纹效果
+      document.querySelectorAll('.link-cta').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const ripple = document.createElement('span');
+          ripple.classList.add('ripple');
+          const rect = btn.getBoundingClientRect();
+          ripple.style.left = `${e.clientX - rect.left}px`;
+          ripple.style.top = `${e.clientY - rect.top}px`;
+          btn.appendChild(ripple);
+          setTimeout(() => ripple.remove(), 700);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
